@@ -2,7 +2,8 @@
   "version": "4",
   "specifiers": {
     "npm:@google-cloud/bigquery@*": "7.9.3",
-    "npm:@modelcontextprotocol/sdk@*": "1.8.0_express@5.1.0_zod@3.24.2"
+    "npm:@modelcontextprotocol/sdk@*": "1.8.0_express@5.1.0_zod@3.24.2",
+    "npm:zod@^3.24.2": "3.24.2"
   },
   "npm": {
     "@google-cloud/bigquery@7.9.3": {
@@ -794,7 +795,8 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:@google-cloud/bigquery@*"
+      "npm:@google-cloud/bigquery@*",
+      "npm:zod@^3.24.2"
     ]
   }
 }

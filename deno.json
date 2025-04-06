@@ -5,7 +5,8 @@
   },
   "imports": {
     "@modelcontextprotocol": "npm:@modelcontextprotocol",
-    "@google-cloud/bigquery": "npm:@google-cloud/bigquery"
+    "@google-cloud/bigquery": "npm:@google-cloud/bigquery",
+    "zod": "npm:zod@^3.24.2"
   },
   "nodeModulesDir": "auto"
 }
