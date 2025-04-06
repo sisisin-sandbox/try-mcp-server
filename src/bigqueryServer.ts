@@ -11,10 +11,10 @@ const listTablesSchema = z.object({
 export function applyBigQueryServer(server: McpServer) {
   server.resource(
     'BigQueryのテーブル一覧',
-    new ResourceTemplate('bigquery://datasets/{datasetId}/tables', { list: undefined }),
+    new ResourceTemplate('bigquery://datasets/{datasetId}/tables{?projectId}', { list: undefined }),
     {
       description:
-        '指定したdataset配下のBigQueryのテーブル一覧を取得します。query parameterにprojectIdを指定できます。',
+        '指定したdataset配下のBigQueryのテーブル一覧を取得します。URLのクエリパラメータまたは変数としてprojectIdを指定できます（例: bigquery://datasets/{datasetId}/tables?projectId=your-project-id）。projectIdが指定されない場合はデフォルトのプロジェクトが使用されます。',
       mimeType: 'application/json',
     },
     async (_uri: URL, variables): Promise<ReadResourceResult> => {
@@ -24,13 +24,15 @@ export function applyBigQueryServer(server: McpServer) {
           contents: [
             {
               uri: 'error://invalid-parameters',
-              text: `datasetIdが指定されていません。`,
+              text: `datasetIdが指定されていません。projectIdはオプショナルです。`,
             },
           ],
           isError: true,
         };
       }
       const datasetId = result.data.datasetId;
+
+      // URLのクエリパラメータからprojectIdを取得
       const projectId = result.data.projectId;
 
       try {
