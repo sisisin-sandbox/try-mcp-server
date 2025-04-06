@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "start": "deno run -A src/index.ts",
+    "compile": "deno compile --unstable -A --output bin/mcp_bigquery src/index.ts"
+  },
+  "imports": {
+    "@modelcontextprotocol": "npm:@modelcontextprotocol",
+    "@google-cloud/bigquery": "npm:@google-cloud/bigquery"
+  },
+  "nodeModulesDir": "auto"
+}

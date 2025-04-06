@@ -1,0 +1,4 @@
+node_modules
+bin
+.roo/mcp.json
+.roorules
