@@ -1,6 +1,9 @@
 # BigQuery MCP サーバー
 
-### example setting
+### setting
+
+- run `deno task compile`
+- add setting
 
 ```json
 {
