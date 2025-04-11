@@ -1,7 +1,7 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { ReadResourceResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { listTables } from './bigquery.ts';
+import { executeQuery, listTables } from './bigquery.ts';
 
 const listTablesSchema = z.object({
   datasetId: z.string(),
@@ -50,6 +50,56 @@ export function applyBigQueryServer(server: McpServer) {
           contents: [
             {
               uri: 'error://query-error',
+              text: error instanceof Error ? error.message : String(error),
+            },
+          ],
+          isError: true,
+        };
+      }
+    },
+  );
+  // クエリ実行ツールの追加
+  server.tool(
+    'BigQueryクエリ実行',
+    'BigQueryに対してSQLクエリを実行します。',
+    {
+      query: z.string(),
+      projectId: z.string().optional(),
+      location: z.string().optional(),
+      maxResults: z.number().optional(),
+      params: z.record(z.unknown()).optional(),
+      dryRun: z.boolean().optional(),
+    },
+    async (args, _extra) => {
+      try {
+        const result = await executeQuery(args.query, {
+          projectId: args.projectId,
+          location: args.location,
+          maxResults: args.maxResults,
+          params: args.params,
+          dryRun: args.dryRun,
+        });
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(
+                {
+                  rows: result.rows,
+                  metadata: result.metadata,
+                },
+                null,
+                2,
+              ),
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [
+            {
+              type: 'text',
               text: error instanceof Error ? error.message : String(error),
             },
           ],
